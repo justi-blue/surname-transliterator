@@ -55,6 +55,10 @@ clean_russian = Surname::Transliterator.transliterate("Иванов", 'russian')
 # => "Ivanov"
 ```
 
+## Important Notes
+
+- **Asymmetric Transformations**: Translations between languages are not symmetric due to historical genealogical adaptations. For example, Polish -owicz may become Lithuanian -avičius, but reversing it doesn't always restore -owicz exactly. Use `polish_to_lithuanian` and `lithuanian_to_polish` as separate methods with their own mappings.
+
 ## Adding New Languages
 
 Edit `DIACRITIC_MAPPINGS` and `POLONIZATION_MAPPINGS` in the code to add support for more languages/pairs.
