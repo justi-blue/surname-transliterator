@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "transliterator/version"
+require_relative 'transliterator/version'
 
 module Surname
   module Transliterator
@@ -88,7 +88,7 @@ module Surname
     POLONIZATION_MAPPINGS = {
       'polish_to_lithuanian' => {
         'owicz' => 'avičius',
-        'owski' => 'auskas',
+        'owski' => 'ovskis',
         'ewski' => 'evskis',
         'icki' => 'ickis',
         'ski' => 'skis',
@@ -96,7 +96,7 @@ module Surname
       },
       'lithuanian_to_polish' => {
         'avičius' => 'owicz',
-        'auskas' => 'owski',
+        'ovskis' => 'owski',
         'evskis' => 'ewski',
         'ickis' => 'icki',
         'skis' => 'ski',
@@ -141,9 +141,7 @@ module Surname
 
       normalized = surname.downcase
       endings.each do |from_ending, to_ending|
-        if normalized.end_with?(from_ending)
-          return normalized.sub(/#{from_ending}$/, to_ending).capitalize
-        end
+        return normalized.sub(/#{from_ending}$/, to_ending).capitalize if normalized.end_with?(from_ending)
       end
 
       surname
@@ -156,7 +154,7 @@ module Surname
       # Then, transform endings if applicable
       transformed = transform_ending(transliterated, from_lang, to_lang)
       # Return variants: only add transformed if different from transliterated
-      variants = [ transliterated ]
+      variants = [transliterated]
       variants << transformed if transformed != transliterated
       variants.compact
     end
