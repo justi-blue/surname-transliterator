@@ -35,7 +35,7 @@ polish_to_lith2 = Surname::Transliterator.polish_to_lithuanian("Antonowicz")
 # => ["Antonavičius", "Antonowič"] (transliterated + transformed)
 
 lith_to_polish = Surname::Transliterator.lithuanian_to_polish("Jankauskas")
-# => ["Jankauski", "Jankauskas"] (transformed + transliterated)
+# => ["Jankowski", "Jankauskas"] (transformed + transliterated)
 
 polish_to_russian = Surname::Transliterator.polish_to_russian("Kowalski")
 # => ["Kowalski", "Kowalskii"]
@@ -85,7 +85,7 @@ Below is a matrix showing example transformations between languages (not symmetr
 | From → To          | Polish → Lithuanian | Lithuanian → Polish |
 |--------------------|---------------------|---------------------|
 | Antonowicz        | Antonavičius, Antonowič | - |
-| Jankauskas        | - | Jankauski, Jankauskas |
+| Jankauskas        | - | Jankowski, Jankauskas |
 | Kowalski          | Kovalskis           | - |
 | Wiśniewski        | Višnievskis, Višnievskas | - |
 | Dombrovskis       | - | Dombrowski          |

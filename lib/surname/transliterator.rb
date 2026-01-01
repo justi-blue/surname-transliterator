@@ -108,6 +108,7 @@ module Surname
         'skas' => ['ski'],
         'ckis' => ['cki'],
         'ckas' => ['cki'],
+        'auskas' => ['owski'], # e.g., Jankauskas → Jankowski
         'onis' => ['owicz'],  # e.g., Jonas → Janowicz
         'aitis' => ['owicz']  # rarer, e.g., Kazlauskas variations
       },
