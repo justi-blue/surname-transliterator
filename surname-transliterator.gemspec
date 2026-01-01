@@ -7,6 +7,7 @@ Gem::Specification.new do |spec|
   spec.version = Surname::Transliterator::VERSION
   spec.authors = [ "Justyna Wojtczak" ]
   spec.email = [ "justine84@gmail.com" ]
+  spec.license = "MIT"
 
   spec.summary = "Transliterate surnames between Polish and Lithuanian based on genealogical rules."
   spec.description = "A Ruby gem for transliterating surnames from Polish to Lithuanian and basic de-polonization, useful for genealogical research."
@@ -17,6 +18,7 @@ Gem::Specification.new do |spec|
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/justine84/surname-transliterator"
+  spec.metadata["changelog_uri"] = "https://github.com/justi-blue/surname-transliterator/blob/main/CHANGELOG.md"
 
 
   # Specify which files should be added to the gem when it is released.
