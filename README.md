@@ -3,8 +3,10 @@
 A Ruby gem for cross-language surname transliteration and transformation, based on genealogical rules. Supports transliteration (removing diacritics/Cyrillic) and polonization/de-polonization endings between languages like Polish-Lithuanian, Polish-Russian, Czech, etc. Extensible for more pairs. Useful for reducing false positives in genealogical matching.
 
 Features:
-- Transliterate Polish surnames to Lithuanian script (remove diacritics).
-- Basic de-polonization (reverse common polonized endings to Lithuanian).
+- Transliterate surnames (remove diacritics/Cyrillic, handle Polish digraphs like sz/č/cz/rz).
+- Transform endings between languages (polonization/de-polonization based on genealogical rules).
+- Generate W/V interchange variants for better genealogical matching.
+- Support for Polish ↔ Lithuanian, Polish ↔ Russian transformations (asymmetric).
 
 ## Installation
 
@@ -43,9 +45,9 @@ polish_to_russian = Surname::Transliterator.polish_to_russian("Kowalski")
 russian_to_polish = Surname::Transliterator.russian_to_polish("Иванов")
 # => ["Ivanov", "Ivanov"]
 
-# General cross-language normalization
-variants = Surname::Transliterator.normalize_surname("Antonowicz", 'polish', 'lithuanian')
-# => ["Antonowicz", "Antanavicius"]
+# General cross-language normalization (includes W/V interchange for genealogical matching)
+variants = Surname::Transliterator.normalize_surname("Wiszniewski", 'polish', 'lithuanian')
+# => ["Wisniewski", "Visnievskis", "Visniewski"] (transliterated + transformed + W/V variants)
 
 # Just transliterate (remove diacritics/Cyrillic)
 clean_polish = Surname::Transliterator.transliterate("Świętochowski", 'polish')
@@ -102,6 +104,14 @@ After checking out the repo, run `bin/setup` to install dependencies. You can al
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
+## TODO
+
+- Add polonization mappings for Czech surnames.
+- Extend support for more language pairs (e.g., Lithuanian ↔ Russian).
+- Improve W/V interchange logic for other languages.
+- Add more genealogical sources for mapping validation.
+- Consider adding fuzzy matching or Soundex for better approximate matches.
+
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/surname-transliterator.
+Bug reports and pull requests are welcome on GitHub at https://github.com/justi-blue/surname-transliterator.
