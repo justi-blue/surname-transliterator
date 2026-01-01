@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2025-01-01
+
+### Added
+- Support for additional polonization mappings: 'ak' → 'akas', 'cki' → 'ckis'/'ckas', 'owski' → 'ovicius'
+- Polish digraph handling in transliteration: 'sz' → 'š', 'cz' → 'č', 'rz' → 'ž'
+- W/V interchange variants for genealogical matching
+- Expanded test suite with more FN examples and edge cases
+- MFA requirement in gemspec for security
+
+### Changed
+- Improved transform_ending to handle multiple overlapping suffixes
+- Updated normalize_surname to include original transliterated forms
+- Enhanced gemspec metadata for better compliance
+
 ## [0.3.0] - 2025-01-01
 
 ### Changed

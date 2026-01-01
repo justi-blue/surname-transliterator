@@ -87,22 +87,29 @@ module Surname
     # Polonization/de-polonization mappings for specific pairs (based on genealogical sources)
     POLONIZATION_MAPPINGS = {
       'polish_to_lithuanian' => {
-        'owicz' => 'avičius',
-        'owski' => 'ovskis',
-        'ewski' => 'evskis',
-        'icki' => 'ickis',
-        'ski' => 'skis',
-        'cki' => 'ckis'
+        'owicz' => ['avičius'],
+        'owski' => %w[ovskis ovskas ovicius],
+        'ewski' => %w[evskis evskas],
+        'icki' => ['ickis'],
+        'ak' => ['akas'],
+        'ski' => %w[skis skas],
+        'cki' => %w[ckis ckas]
       },
       'lithuanian_to_polish' => {
-        'avičius' => 'owicz',
-        'ovskis' => 'owski',
-        'evskis' => 'ewski',
-        'ickis' => 'icki',
-        'skis' => 'ski',
-        'ckis' => 'cki',
-        'onis' => 'owicz',  # e.g., Jonas → Janowicz
-        'aitis' => 'owicz'  # rarer, e.g., Kazlauskas variations
+        'avičius' => ['owicz'],
+        'ovskis' => ['owski'],
+        'ovskas' => ['owski'],
+        'ovicius' => ['owski'],
+        'evskis' => ['ewski'],
+        'evskas' => ['ewski'],
+        'ickis' => ['icki'],
+        'akas' => ['ak'],
+        'skis' => ['ski'],
+        'skas' => ['ski'],
+        'ckis' => ['cki'],
+        'ckas' => ['cki'],
+        'onis' => ['owicz'],  # e.g., Jonas → Janowicz
+        'aitis' => ['owicz']  # rarer, e.g., Kazlauskas variations
       },
       'polish_to_russian' => {
         'ski' => 'skii',
@@ -129,34 +136,63 @@ module Surname
         normalized = normalized.gsub(accented, base)
       end
 
+      # Handle Polish digraphs
+      normalized = normalized.gsub('sz', 'š').gsub('cz', 'č').gsub('rz', 'ž') if from_lang == 'polish'
+
       normalized.capitalize
     end
 
     # Polonization/de-polonization between languages
     def self.transform_ending(surname, from_lang, to_lang)
-      return surname if surname.nil? || surname.empty?
+      return [surname] if surname.nil? || surname.empty?
 
       key = "#{from_lang}_to_#{to_lang}"
       endings = POLONIZATION_MAPPINGS[key] || {}
 
       normalized = surname.downcase
-      endings.each do |from_ending, to_ending|
-        return normalized.sub(/#{from_ending}$/, to_ending).capitalize if normalized.end_with?(from_ending)
+      variants = []
+      # Sort endings by length descending to match longest first
+      sorted_endings = endings.sort_by { |k, v| -k.length }
+      sorted_endings.each do |from_ending, to_endings|
+        next unless normalized.end_with?(from_ending)
+
+        Array(to_endings).each do |to_ending|
+          transformed = normalized.sub(/#{from_ending}$/, to_ending)
+          variants << transformed.capitalize
+        end
+        # Break after first match to avoid overlapping
+        break
       end
 
-      surname
+      variants.uniq
     end
 
     # Full cross-language surname normalization
     def self.normalize_surname(surname, from_lang, to_lang)
-      # First, transliterate to remove diacritics
-      transliterated = transliterate(surname, from_lang)
-      # Then, transform endings if applicable
-      transformed = transform_ending(transliterated, from_lang, to_lang)
-      # Return variants: only add transformed if different from transliterated
-      variants = [transliterated]
-      variants << transformed if transformed != transliterated
-      variants.compact
+      # First, transform endings if applicable
+      transformed_variants = transform_ending(surname, from_lang, to_lang)
+      # Then, transliterate each variant to remove diacritics and handle digraphs
+      variants = transformed_variants.map { |v| transliterate(v, from_lang) }
+
+      # If no transformation, add the transliterated original
+      if transformed_variants == [surname]
+        # Already included
+      else
+        variants << transliterate(surname, from_lang)
+      end
+
+      # Add W/V interchange variants for genealogical matching
+      additional = []
+      variants.each do |v|
+        if v.start_with?('W')
+          additional << v.sub(/^W/, 'V')
+        elsif v.start_with?('V')
+          additional << v.sub(/^V/, 'W')
+        end
+      end
+      variants.concat(additional)
+
+      variants.uniq.reject { |v| v.nil? || v.empty? }
     end
 
     # Convenience methods
