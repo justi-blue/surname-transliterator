@@ -153,8 +153,10 @@ module Surname
       transliterated = transliterate(surname, from_lang)
       # Then, transform endings if applicable
       transformed = transform_ending(transliterated, from_lang, to_lang)
-      # Return both for comparison
-      [ transliterated, transformed ].uniq.compact
+      # Return variants: only add transformed if different from transliterated
+      variants = [ transliterated ]
+      variants << transformed if transformed != transliterated
+      variants.compact
     end
 
     # Convenience methods

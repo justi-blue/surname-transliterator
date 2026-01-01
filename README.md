@@ -29,7 +29,10 @@ require 'surname/transliterator'
 
 # Convenience methods
 polish_to_lith = Surname::Transliterator.polish_to_lithuanian("Łukasiewicz")
-# => ["Lukasiewicz", "Lukasiewicz"] (transliterated, transformed if applicable)
+# => ["Lukasiewicz"] (only transliterated, no transformation)
+
+polish_to_lith2 = Surname::Transliterator.polish_to_lithuanian("Antonowicz")
+# => ["Antonowicz", "Antanavicius"] (transliterated + transformed)
 
 lith_to_polish = Surname::Transliterator.lithuanian_to_polish("Jankauskas")
 # => ["Jankauskas", "Jankowski"]
